@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="description" content="AVH_ANIME_4K_ONLINE">
+    <meta name="keywords" content="AVH_ANIME_4K_ONLINE">
+    <meta name="author" content="Mateusz Mróz">
+
+    <title>AVH_ANIME_4K_ONLINE</title>
+
+    <link rel="shortcut icon" href="assets/img/icon.png" type="image/x-icon">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="nav__logo">
+            <a href="index.html">
+                <span class="blast">A</span><span class="blast">V</span><span class="blast">H</span><span class="blast">_</span><span class="blast">A</span><span class="blast">N</span><span class="blast">I</span><span class="blast">M</span><span class="blast">E</span><span class="blast">_</span><span class="blast">4</span><span class="blast">K</span><span class="blast">_</span><span class="blast">O</span><span class="blast">N</span><span class="blast">L</span><span class="blast">I</span><span class="blast">N</span><span class="blast">E</span>
+
+            </a>
+        </div>
+    </header>
+
+    <main class="main">
+        <ul class="epizod__list">
+        </ul>
+    </main>
+
+    <footer class="footer">
+    </footer>
+</body>
+<script>
+    function blast() {
+        const blast = document.querySelectorAll('.blast');
+        blast.forEach((blast) => {
+            blast.addEventListener('mouseenter', () => {
+                blast.classList.add('active__blast');
+                blast.addEventListener('animationend', () => {
+                    blast.classList.remove('active__blast');
+                });
+            });
+        });
+    }
+
+    function addepizodItem() {
+        const epizodList = document
+            .querySelector('.epizod__list');
+        for (let i = 1; i < 13; i++) {
+            const epizodItem = document.createElement('li');
+            epizodItem.classList.add('epizod__item');
+            epizodItem.innerHTML = `
+                <div class="button__area">
+                    <div class="button__wrapper">
+                        <a class="button" href="epizods.html" target="_blank">
+                            <i class="ri-arrow-right-s-line"></i>
+                            ${i}
+                            <i class="ri-arrow-left-s-line"></i>
+                        </a>
+                        <div class="button__bg"></div>
+                    </div>
+                </div>
+            `;
+            epizodList.appendChild(epizodItem);
+        }
+    }
+
+    function addButtonLocalStorage() {
+        const button = document.querySelectorAll('.button');
+        button.forEach((button) => {
+            button.addEventListener('click', () => {
+                const buttonNumber = button.innerText;
+                localStorage.setItem('buttonNumber', buttonNumber);
+            });
+        });
+    }
+    blast();
+    addepizodItem();
+    addButtonLocalStorage();
+</script>
+
+</html>
