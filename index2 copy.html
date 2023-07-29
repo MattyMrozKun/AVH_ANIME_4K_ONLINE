@@ -178,55 +178,47 @@
     <div id="player-container">
         <video id="player" playsinline controls data-poster="assets/img/TEST_0.jpg">
             <source src="assets/videos/TEST/TEST_0.mp4" type="video/mp4">
+            <!-- <track kind="captions" label="Polski" srclang="pl" src="assets/sub/0.vtt" default> -->
         </video>
     </div>
 
+    <!-- kiedy się skończy to zacznie koleje -->
     <script>
         const videoList = [
             'assets/videos/TEST/TEST_0.mp4',
             'assets/videos/TEST/TEST_1.mp4',
             'assets/videos/TEST/TEST_2.mp4',
             'assets/videos/TEST/TEST_3.mp4',
+            // Dodaj kolejne filmy tutaj
         ];
 
         let currentIndex = 0;
         const player = new Plyr('#player');
-
-        // Wczytaj wszystkie pliki wideo
-        videoList.forEach(video => {
-            const preloadLink = document.createElement('link');
-            preloadLink.rel = 'preload';
-            preloadLink.as = 'video';
-            preloadLink.href = video;
-            document.head.appendChild(preloadLink);
-        });
-
-        function playNextVideo() {
+        function preloadNextVideo() {
             const nextIndex = (currentIndex + 1) % videoList.length;
             const nextVideo = videoList[nextIndex];
-
-            player.source = {
-                type: 'video',
-                sources: [{
-                    src: nextVideo,
-                    type: 'video/mp4',
-                }],
-            };
-
-            currentIndex = nextIndex;
-
-            setTimeout(() => {
-                if (!document.hidden) {
-                    player.play();
-                }
-            }, 0);
+            const preloadVideo = new Audio();
+            preloadVideo.src = nextVideo;
+            preloadVideo.addEventListener('canplaythrough', () => {
+                player.source = {
+                    type: 'video',
+                    sources: [{
+                        src: nextVideo,
+                        type: 'video/mp4',
+                    }],
+                };
+                currentIndex = nextIndex;
+                setTimeout(() => {
+                    if (!document.hidden) {
+                        player.play();
+                    }
+                }, 0);
+            }, { once: true });
         }
+        player.on('ended', preloadNextVideo);
 
-        player.on('ended', playNextVideo);
-
-
+        // player.play();
     </script>
-
 </body>
 
 </html>
