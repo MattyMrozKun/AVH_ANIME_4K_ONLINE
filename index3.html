@@ -202,7 +202,9 @@
         ];
 
         let currentIndex = 0;
-        const player = new Plyr('#player');
+        const player = new Plyr('#player', {
+            fullscreen: { iosNative: true }
+        });
         function preloadNextVideo() {
             const nextIndex = (currentIndex + 1) % videoList.length;
             const nextVideo = videoList[nextIndex];
@@ -227,9 +229,9 @@
         player.on('ended', preloadNextVideo);
 
         // player.play();
-        player.addEventListener("webkitendfullscreen", function () {
-            videoExitedFullscreen(video);
-        }, false);
+        // player.addEventListener("webkitendfullscreen", function () {
+        //     videoExitedFullscreen(video);
+        // }, false);
     </script>
 </body>
 
