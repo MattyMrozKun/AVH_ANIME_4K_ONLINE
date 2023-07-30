@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer" />
+    <link rel="shortcut icon" href="./favicon.ico">
+    <title>SubtitleOctopus - Advanced Substation Alpha Library for WebAssembly & asm.js</title>
+    <link integrity="" rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="./assets/js/subtitles-octopus.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="./index.html">SubtitlesOctopus</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nb" aria-controls="nb" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nb">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="./index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/libass/JavascriptSubtitlesOctopus">Github</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="content" style="padding-top: 25px;">
+      <div id="main" class="container container-body">
+        <h1>MediaElement.js Player Test with Multi-track</h1>
+        
+        <video width="800" height="480" controls="controls" preload="none">
+            <source type="video/webm" src="https://animethemes.moe/video/ToaruKagakuNoRailgunS-OP1.webm" />
+            <track src="/JavascriptSubtitlesOctopus/subtitles/railgun_op.ass" srclang="en" label="English" kind="subtitles" type="application/x-ass">
+            <track src="/JavascriptSubtitlesOctopus/subtitles/test.ass" srclang="jp" label="Test Lang" kind="subtitles" type="application/x-ass">
+        </video>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.12/mediaelementplayer.min.css" integrity="sha256-ji1bfJaTGnyscoc7LzcV9yNJy5vGKJ0frO3KJo1oaGQ=" crossorigin="anonymous" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.12/mediaelement-and-player.min.js" integrity="sha256-z7JbZVaNbNzLvOCFHUNrjqnZRojZbRAxgr4KU2qL0qc=" crossorigin="anonymous"></script>
+        <script>
+            mejs.i18n.language('en');
+
+            $('video').mediaelementplayer({
+                success: function (player, node) {
+                    var video = node;
+                    player.addEventListener('captionschange', function(e) {
+                        console.log('Charging Track ' + e.detail.caption);
+                        if (e.detail.caption !== null) {
+                            if (window.octopusInstance) {
+                                window.octopusInstance.setTrackByUrl(e.detail.caption.src);
+                            } else if (SubtitlesOctopus) {
+                                var options = {
+                                    video: video,
+                                    subUrl: e.detail.caption.src,
+                                    fonts: ['/JavascriptSubtitlesOctopus/fonts/CabinCondensed-Regular.ttf', '/JavascriptSubtitlesOctopus/fonts/SourceSansPro-SemiBold.ttf'],
+                                    //onReady: onReadyFunction,
+                                    debug: true,
+                                    workerUrl: '/JavascriptSubtitlesOctopus/assets/js/subtitles-octopus-worker.js'
+                                };
+                                window.octopusInstance = new SubtitlesOctopus(options);
+                            }
+                        } else {
+                            if (SubtitlesOctopus || window.octopusInstance) {
+                                console.log('Disable Track ' + e.detail.caption);
+                                window.octopusInstance.freeTrack();
+                            }
+                        }
+                    });
+
+                    $(player).closest('.mejs__container').attr('lang', mejs.i18n.language());
+                    $('html').attr('lang', mejs.i18n.language());
+                }
+            });
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Przykład wyświetlania napisów za pomocą JavascriptSubtitlesOctopus</title>
+</head>
+
+<body>
+    <video id="video"
+        src="https://huggingface.co/MattyMroz/ANIME/resolve/main/%5Bshisha%5D%20Fate%20Strange%20Fake%20-%20Whispers%20of%20Dawn%20%5BWEB%201080p%5D.mkv?raw=true"
+        controls></video>
+
+    <script src="https://cdn.jsdelivr.net/npm/libass@0.15.1/dist/libass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@eyevinn/subtitle-octopus@4.1.0/dist/subtitles-octopus.js"></script>
+
+    <script>
+        var video = document.getElementById('video');
+        var subtitlesOctopus = new SubtitlesOctopus({
+            video: video,
+            subUrl: '/assets/videos/[shisha] Fate Strange Fake - Whispers of Dawn [WEB 1080p].ass',
+            fonts: [
+                '/assets/videos/Fake Fonts/Artifika PL.otf',
+                '/assets/videos/Fake Fonts/FOT-Kafu Techno Std Strp U PL.otf',
+                '/assets/videos/Fake Fonts/OfficinaSansStdPL-Bold.ttf',
+                '/assets/videos/Fake Fonts/OfficinaSansStdPL-BoldItalic.ttf'
+            ],
+            workerUrl: '/assets/js/subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
+        });
+    </script>
+</body>
+
+</html>
