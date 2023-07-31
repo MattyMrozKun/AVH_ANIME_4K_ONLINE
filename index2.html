@@ -176,57 +176,30 @@
 
     <!-- HTML5 video -->
     <div id="player-container">
-        <video id="player" playsinline controls data-poster="assets/img/TEST_0.jpg">
-            <source src="https://huggingface.co/MattyMroz/ANIME/resolve/main/%5Bshisha%5D%20Fate%20Strange%20Fake%20-%20Whispers%20of%20Dawn%20%5BWEB%201080p%5D.mkv?raw=true" type="video/mp4">
+        <video id="player" playsinline controls data-poster="assets/img/">
+            <source
+                src="https://huggingface.co/MattyMroz/ANIME/resolve/main/%5Bshisha%5D%20Fate%20Strange%20Fake%20-%20Whispers%20of%20Dawn%20%5BWEB%201080p%5D.mkv?raw=true"
+                type="video/mp4">
+            <track kind="captions" label="Polski" srclang="pl" src="https://huggingface.co/MattyMroz/ANIME/raw/main/%5Bshisha%5D%20Fate%20Strange%20Fake%20-%20Whispers%20of%20Dawn%20%5BWEB%201080p%5D.srt" default>
         </video>
     </div>
+    <!-- <div id="player-container">
+        <video id="player"
+            src="https://huggingface.co/MattyMroz/ANIME/resolve/main/%5Bshisha%5D%20Fate%20Strange%20Fake%20-%20Whispers%20of%20Dawn%20%5BWEB%201080p%5D.mkv?raw=true"
+            preload="auto">
+            <track kind="captions" label="Polski" srclang="pl" src="/assets/videos/[shisha] Masamune-kun no Revenge S2 - 01 [1080p AAC].vtt" default>
+        </video>
+    </div> -->
 
+    <!-- kiedy się skończy to zacznie koleje -->
     <script>
-        const videoList = [
-            'assets/videos/TEST/TEST_0.mp4',
-            'assets/videos/TEST/TEST_1.mp4',
-            'assets/videos/TEST/TEST_2.mp4',
-            'assets/videos/TEST/TEST_3.mp4',
-        ];
-
         let currentIndex = 0;
-        const player = new Plyr('#player');
-
-        // Wczytaj wszystkie pliki wideo
-        videoList.forEach(video => {
-            const preloadLink = document.createElement('link');
-            preloadLink.rel = 'preload';
-            preloadLink.as = 'video';
-            preloadLink.href = video;
-            document.head.appendChild(preloadLink);
+        const player = new Plyr('#player', {
+            fullscreen: { iosNative: true }
         });
 
-        function playNextVideo() {
-            const nextIndex = (currentIndex + 1) % videoList.length;
-            const nextVideo = videoList[nextIndex];
-
-            player.source = {
-                type: 'video',
-                sources: [{
-                    src: nextVideo,
-                    type: 'video/mp4',
-                }],
-            };
-
-            currentIndex = nextIndex;
-
-            setTimeout(() => {
-                if (!document.hidden) {
-                    player.play();
-                }
-            }, 0);
-        }
-
-        player.on('ended', playNextVideo);
-
-
+        // player.play();
     </script>
-
 </body>
 
 </html>
